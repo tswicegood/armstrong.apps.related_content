@@ -33,7 +33,7 @@ class RelatedContentInline(GenericTabularInline):
     ct_fk_field = "source_id"
 
     model = RelatedContent
-    template = "admin/edit_inline/generickey.html"
+    template = "admin/edit_inline/related_content.html"
 
     form = RelatedContentInlineForm
 
