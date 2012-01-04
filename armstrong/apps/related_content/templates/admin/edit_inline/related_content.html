@@ -5,7 +5,7 @@
 <fieldset class="module">
    <h2>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }}</h2>
    {{ inline_admin_formset.formset.non_form_errors }}
-   <table>
+   <table class="sortable">
 
      <tbody>
      {% for inline_admin_form in inline_admin_formset %}
@@ -117,6 +117,29 @@
                 alternatingRows(row);
             })
         });
+
+        if (window.jQuery.ui) {
+          var $j = window.jQuery;
+          var restrip = function(e, ui) {
+            var rows = $j(e.srcElement).parents("table").find("tr").filter(function() {
+                  var el = $j(this);
+                  return !el.hasClass("add-row") && !el.hasClass("ui-state-highlight");
+                });
+            rows.each(function(idx) {
+              var el = $j(this),
+                  isEven = idx % 2 === 0,
+                  className = "row" + (isEven ? "2" : "1"),
+                  alternateClassName = "row" + (isEven ? "1" : "2");
+              el.removeClass(alternateClassName).addClass(className);
+            });
+          };
+          var opts = {
+            placeholder: "ui-state-highlight",
+            start: restrip,
+            update: restrip
+          };
+          $j(".sortable tbody").sortable(opts).disableSelection();
+        }
     });
 })(django.jQuery);
 </script>

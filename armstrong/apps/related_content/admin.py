@@ -29,6 +29,17 @@ class RelatedContentInlineForm(forms.ModelForm):
 
 
 class RelatedContentInline(GenericTabularInline):
+    """
+    .. todo:: document jQuery UI dependencies
+    .. todo:: make the JS load optionally in case something else is
+              doing it already
+    """
+
+    class Media:
+        js = (
+            "hatband/js/jquery-1.6.2.min.js",
+            "hatband/js/jquery-ui-1.8.16.min.js",
+        )
     ct_field = "source_type"
     ct_fk_field = "source_id"
 
