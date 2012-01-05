@@ -134,6 +134,13 @@
               el.removeClass(alternateClassName).addClass(className);
             });
           };
+
+          // This means the destination_id isn't set, so this is an empty
+          // field.  Pass instead of actually doing anything
+          var isNotAnEmptyRow = function() {
+            return $(this).parent().parent().find("input:nth-child(2)").val() !== ""
+          }
+
           var opts = {
             placeholder: "ui-state-highlight",
             start: function(e, ui) {
@@ -144,7 +151,12 @@
               td.css("height", src.parent().height());
               highlightRow.html(td);
             },
-            update: restrip
+            update: function(e ,ui) {
+              restrip(e, ui);
+              $j(".sortable td.order input").filter(isNotAnEmptyRow).each(function(idx) {
+                $j(this).val(idx);
+              });
+            }
           };
           $j(".sortable tbody").sortable(opts).disableSelection();
         }
