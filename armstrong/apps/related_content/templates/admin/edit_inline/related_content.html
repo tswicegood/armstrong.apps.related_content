@@ -119,7 +119,8 @@
         });
 
         if (window.jQuery.ui) {
-          var $j = window.jQuery;
+          var $j = window.jQuery,
+              numOfColumns = $j(".sortable tr td[colspan]").attr("colspan");
           var restrip = function(e, ui) {
             var rows = $j(e.srcElement).parents("table").find("tr").filter(function() {
                   var el = $j(this);
@@ -135,7 +136,14 @@
           };
           var opts = {
             placeholder: "ui-state-highlight",
-            start: restrip,
+            start: function(e, ui) {
+              restrip(e, ui);
+              var src = $j(e.srcElement),
+                  highlightRow = src.parents("tbody").find("tr.ui-state-highlight"),
+                  td = $j("<td colspan=\"" + numOfColumns + "\"/>");
+              td.css("height", src.parent().height());
+              highlightRow.html(td);
+            },
             update: restrip
           };
           $j(".sortable tbody").sortable(opts).disableSelection();
