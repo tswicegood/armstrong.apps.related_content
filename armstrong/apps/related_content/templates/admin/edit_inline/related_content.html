@@ -143,9 +143,9 @@
               restrip(e, ui);
               var src = $j(e.srcElement),
                   highlightRow = src.parents("tbody").find("tr.ui-state-highlight"),
-                  td = $j("<td colspan=\"" + numOfColumns + "\"/>");
-              td.css("height", src.parent().height());
-              highlightRow.html(td);
+                  td = $j("<td>");
+              td.css("height", src.parent().height()).attr("colspan", numOfColumns);
+              highlightRow.append(td);
             },
             update: function(e ,ui) {
               restrip(e, ui);
