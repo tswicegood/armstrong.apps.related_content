@@ -122,17 +122,13 @@
           var $j = window.jQuery,
               numOfColumns = $j(".sortable tr td[colspan]").attr("colspan");
           var restrip = function(e, ui) {
-            var rows = $j(e.srcElement).parents("table").find("tr").filter(function() {
-                  var el = $j(this);
-                  return !el.hasClass("add-row") && !el.hasClass("ui-state-highlight");
-                });
-            rows.each(function(idx) {
-              var el = $j(this),
-                  isEven = idx % 2 === 0,
-                  className = "row" + (isEven ? "2" : "1"),
-                  alternateClassName = "row" + (isEven ? "1" : "2");
-              el.removeClass(alternateClassName).addClass(className);
-            });
+            var skippableRows = function() {
+              var el = $j(this);
+              return !el.hasClass("add-row") && !el.hasClass("ui-state-highlight");
+            };
+            var rows = $j(e.srcElement).parents("table").find("tr").filter(skippableRows);
+            rows.filter(":odd").removeClass("row2").addClass("row1");
+            rows.filter(":even").removeClass("row1").addClass("row2");
           };
 
           // This means the destination_id isn't set, so this is an empty
