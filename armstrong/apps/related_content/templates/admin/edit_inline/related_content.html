@@ -158,6 +158,17 @@
             }
           };
           $j(".sortable tbody").sortable(opts);
+          $j(".sortable tbody a.delete").click(function(e) {
+            // Check the parent row to see if it has an original or is a new
+            // addition.  If it's a new addition, zero out the RelatedType
+            // select so Django doesn't think it's a bad submission.
+            var row = $j(this).parents("tr");
+            if (!row.hasClass("has_original")) {
+              row.find(".related_type select").val("");
+            }
+            row.find("input[id$='DELETE']").attr("checked", true);
+            row.hide();
+          });
         }
     });
 })(django.jQuery);
