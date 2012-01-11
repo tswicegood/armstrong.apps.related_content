@@ -58,7 +58,9 @@
 <script type="text/javascript">
 (function($) {
     $(document).ready(function($) {
-        var rows = "#{{ inline_admin_formset.formset.prefix }}-group .tabular.inline-related tbody tr";
+        var container = "#{{ inline_admin_formset.formset.prefix }}-group",
+            rows = container + " .tabular.inline-related tbody tr",
+            sortable = container + " .sortable";
         var alternatingRows = function(row) {
             $(rows).not(".add-row").removeClass("row1 row2")
                 .filter(":even").addClass("row1").end()
@@ -123,7 +125,7 @@
 
         if (window.jQuery.ui) {
           var $j = window.jQuery,
-              numOfColumns = $j(".sortable tr td[colspan]").attr("colspan");
+              numOfColumns = $j(sortable + " tr td[colspan]").attr("colspan");
           var restrip = function(e, ui) {
             var skippableRows = function() {
               var el = $j(this);
@@ -152,13 +154,13 @@
             },
             update: function(e ,ui) {
               restrip(e, ui);
-              $j(".sortable td.order input").filter(isNotAnEmptyRow).each(function(idx) {
+              $j(sortable + " td.order input").filter(isNotAnEmptyRow).each(function(idx) {
                 $j(this).val(idx);
               });
             }
           };
-          $j(".sortable tbody").sortable(opts);
-          $j(".sortable tbody a.delete").click(function(e) {
+          $j(sortable + " tbody").sortable(opts);
+          $j(sortable + " tbody a.delete").click(function(e) {
             // Check the parent row to see if it has an original or is a new
             // addition.  If it's a new addition, zero out the RelatedType
             // select so Django doesn't think it's a bad submission.
